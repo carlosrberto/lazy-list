@@ -1,4 +1,4 @@
-import { lazy } from './index';
+import lazy from './index';
 
 describe('LazyList.map', () => {
   it('should map array with number values', () => {
