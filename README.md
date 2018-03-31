@@ -5,7 +5,7 @@ LazyList implements `map`, `filter` and `reduce` in JavaScript Arrays with lazy 
 >**Warning**: This project  is under initial development and is not intended to production use yet.
 
 ## Why?
-Because `map`, `filter` and `reduce` operations always return a new `Array`. When working with large lists this can be a problem. What LazyList do is combine all these operations in a single execution, returning only one final `Array`.
+Because `map`, `filter` and `reduce` operations always return a new `Array` or depends on previous operations. When working with large lists this can be a problem. What LazyList do is combine all these operations in a single execution, returning only one final `Array` or result.
 
 ## Usage
 
