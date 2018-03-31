@@ -1,0 +1,27 @@
+{
+  "name": "lazy-list",
+  "version": "0.1.0",
+  "main": "lib/index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-jest": "^22.4.3",
+    "babel-preset-env": "^1.6.1",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.10.0",
+    "husky": "^0.14.3",
+    "jest": "^22.4.3",
+    "regenerator-runtime": "^0.11.1",
+    "rimraf": "^2.6.2",
+    "rollup": "^0.57.1",
+    "rollup-plugin-babel": "^3.0.3"
+  },
+  "scripts": {
+    "start": "npm run test -- --watch",
+    "test": "jest",
+    "lint": "eslint .",
+    "clean": "rimraf lib",
+    "build": "npm run clean && npm run lint && npm run test && rollup -c"
+  }
+}
