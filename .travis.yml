@@ -1,0 +1,12 @@
+language: node_js
+node_js:
+  - "8"
+install:
+  - yarn
+script:
+  - yarn lint
+  - yarn test
+  - yarn cov
+
+after_success:
+  - yarn cov:publish

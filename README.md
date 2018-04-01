@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/carlosrberto/lazy-list.svg?branch=master)](https://travis-ci.org/carlosrberto/lazy-list)
+[![Coverage Status](https://coveralls.io/repos/github/carlosrberto/lazy-list/badge.svg?branch=master)](https://coveralls.io/github/carlosrberto/lazy-list?branch=master)
+
 # LazyList
 
 LazyList implements `map`, `filter` and `reduce` in JavaScript Arrays with lazy evaluation.

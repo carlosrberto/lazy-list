@@ -1,84 +1,93 @@
-const LIST_METHODS = {
+export const LIST_OPERATIONS = {
   MAP: 'map',
   FILTER: 'filter',
-  FOR_EACH: 'forEach',
   REDUCE: 'reduce',
 };
 
+export const VALID_OPERATIONS = Object
+  .keys(LIST_OPERATIONS)
+  .map(v => LIST_OPERATIONS[v]);
+
 export default class LazyList {
-  constructor(list) {
+  constructor(list, operations = []) {
+    this.operations = operations;
     this.list = list;
-    this.t = [];
+  }
+
+  createOperation(type, fn, ...extraArgs) {
+    if (!(type in VALID_OPERATIONS)) {
+      throw Error('Invalid operation type argument');
+    }
+
+    if (typeof fn !== 'function') {
+      throw Error('Invalid callback argument');
+    }
+
+    return new LazyList(
+      this.list,
+      [
+        ...this.operations,
+        ...[{ type, fn, extraArgs }],
+      ],
+    );
   }
 
   map(fn) {
-    this.t.push([LIST_METHODS.MAP, fn]);
-    return this;
+    return this.createOperation(LIST_OPERATIONS.MAP, fn);
   }
 
   filter(fn) {
-    this.t.push([LIST_METHODS.FILTER, fn]);
-    return this;
+    return this.createOperation(LIST_OPERATIONS.FILTER, fn);
   }
 
-  forEach(fn) {
-    this.t.push([LIST_METHODS.FOR_EACH, fn]);
-    return this;
-  }
-
-  reduce(fn, acc) {
-    this.t.push([LIST_METHODS.REDUCE, fn, acc]);
-    return this.value();
+  reduce(fn, ...extraArgs) {
+    return this.createOperation(LIST_OPERATIONS.REDUCE, fn, ...extraArgs).value();
   }
 
   value() {
+    const { list, operations } = this;
+    const listLength = list.length;
+    const operationsLength = operations.length;
     const result = [];
-    const hasReduce = this.t[this.t.length - 1][0] === LIST_METHODS.REDUCE;
     let reducerAcc;
-    for (let i = 0; i < this.list.length; i += 1) {
-      let nextValue = this.list[i];
-      for (let k = 0; k < this.t.length; k += 1) {
-        if (nextValue) {
-          switch (this.t[k][0]) {
-            case LIST_METHODS.MAP:
-              nextValue = this.t[k][1](nextValue);
-              break;
 
-            case LIST_METHODS.FILTER:
-              if (!this.t[k][1](nextValue)) {
-                nextValue = false;
-              }
-              break;
+    for (let i = 0; i < listLength; i += 1) {
+      const item = list[i];
+      const nextItem = { value: item, valid: true };
 
-            case LIST_METHODS.FOR_EACH:
-              this.t[k][1](nextValue);
-              break;
-            default:
+      for (let j = 0; j < operationsLength; j += 1) {
+        const { type, fn, extraArgs } = operations[j];
+
+        if (nextItem.valid && type === LIST_OPERATIONS.MAP) {
+          nextItem.value = fn(item, i);
+        } else if (nextItem.valid && type === LIST_OPERATIONS.FILTER) {
+          if (fn(item, i)) {
+            nextItem.value = item;
+          } else {
+            nextItem.valid = false;
           }
         }
 
-
-        if (nextValue && hasReduce) {
-          [, , reducerAcc] = this.t[this.t.length - 1];
-          if (!reducerAcc && result.length === 1) {
-            [reducerAcc] = result;
-          } else if (!reducerAcc && result.length === 0) {
-            reducerAcc = nextValue;
-          } else if (reducerAcc && result.length === 0) {
-            reducerAcc = this.t[this.t.length - 1][1](reducerAcc, nextValue);
-          }
-          if (result.length >= 1) {
-            reducerAcc = this.t[this.t.length - 1][1](reducerAcc, nextValue);
+        if (nextItem.valid && type === LIST_OPERATIONS.REDUCE) {
+          const [reducerInitial] = extraArgs;
+          if (i === 0) {
+            if (reducerInitial !== undefined) {
+              reducerAcc = fn(reducerInitial, item);
+            } else {
+              reducerAcc = item;
+            }
+          } else {
+            reducerAcc = fn(reducerAcc, item);
           }
         }
       }
 
-      if (nextValue) {
-        result.push(nextValue);
+      if (nextItem.valid) {
+        result.push(nextItem.value);
       }
     }
 
-    if (hasReduce) {
+    if (reducerAcc) {
       return reducerAcc;
     }
 
