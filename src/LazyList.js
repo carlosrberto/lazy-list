@@ -10,6 +10,14 @@ export const VALID_OPERATIONS = Object
 
 export default class LazyList {
   constructor(list, operations = []) {
+    if (!Array.isArray(list)) {
+      throw Error('Invalid list argument');
+    }
+
+    if (!Array.isArray(operations)) {
+      throw Error('Invalid operations argument');
+    }
+
     this.operations = operations;
     this.list = list;
   }

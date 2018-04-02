@@ -1,5 +1,21 @@
 import lazy from './index';
-import { LIST_OPERATIONS } from './LazyList';
+import LazyList, { LIST_OPERATIONS } from './LazyList';
+
+describe('LazyList.constructor', () => {
+  it('should throw when invalid list is provided', () => {
+    expect(() => {
+      const list = () => new LazyList(null);
+      list();
+    }).toThrowError('Invalid list argument');
+  });
+
+  it('should throw when invalid operations is provided', () => {
+    expect(() => {
+      const list = () => new LazyList([], null);
+      list();
+    }).toThrowError('Invalid operations argument');
+  });
+});
 
 describe('LazyList.createOperation', () => {
   it('should throw when invalid operation is provided', () => {
