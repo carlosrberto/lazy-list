@@ -56,6 +56,7 @@ export default class LazyList {
     const { list, operations } = this;
     const listLength = list.length;
     const operationsLength = operations.length;
+    const { type: lastOperationType } = operations[operationsLength - 1];
     const result = [];
     let reducerAcc;
 
@@ -90,12 +91,12 @@ export default class LazyList {
         }
       }
 
-      if (nextItem.valid) {
+      if (lastOperationType !== LIST_OPERATIONS.REDUCE && nextItem.valid) {
         result.push(nextItem.value);
       }
     }
 
-    if (reducerAcc) {
+    if (lastOperationType === LIST_OPERATIONS.REDUCE) {
       return reducerAcc;
     }
 

@@ -86,6 +86,7 @@ describe('LazyList.map', () => {
 describe('LazyList.filter', () => {
   it('should filter value correctly', () => {
     expect(lazy([0, 1, 2]).filter(v => v > 0).value()).toEqual([1, 2]);
+    expect(lazy([0, true, false]).filter(v => !!v).value()).toEqual([true]);
     expect(lazy([
       { name: 'Joe', age: 3 },
       { name: 'Spike', age: 16 },
@@ -103,6 +104,7 @@ describe('LazyList.filter', () => {
 describe('LazyList.reduce', () => {
   it('should reduce to correctly value', () => {
     expect(lazy([1, 2, 3]).reduce((a, b) => a + b)).toEqual(6);
+    expect(lazy([0, 0]).reduce((a, b) => a + b)).toEqual(0);
   });
 
   it('should reduce to correctly value when provide initial value', () => {
