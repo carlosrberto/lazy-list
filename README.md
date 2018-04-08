@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/carlosrberto/lazy-list.svg?branch=master)](https://travis-ci.org/carlosrberto/lazy-list)
 [![Coverage Status](https://coveralls.io/repos/github/carlosrberto/lazy-list/badge.svg?branch=master)](https://coveralls.io/github/carlosrberto/lazy-list?branch=master)
+[![npm version](https://badge.fury.io/js/%40carlosrberto%2Flazy-list.svg)](https://badge.fury.io/js/%40carlosrberto%2Flazy-list)
 
 # LazyList
 
