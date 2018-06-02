@@ -5,8 +5,8 @@ install:
 - yarn
 script:
 - yarn lint
-- yarn test
 - yarn cov
+- yarn build
 after_success:
 - yarn cov:publish
 deploy:
