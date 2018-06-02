@@ -1,6 +1,6 @@
 {
   "name": "@carlosrberto/lazy-list",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "LazyList implements map, filter and reduce in JavaScript Arrays with lazy evaluation.",
   "main": "lib/index.js",
   "repository": "git@github.com:carlosrberto/lazy-list.git",
